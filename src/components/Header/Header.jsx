@@ -3,11 +3,13 @@ import './Header.scss';
 import { useLanguage } from '../../context/LanguageContext';
 
 const Header = () => {
-  const { language, setLanguage, t } = useLanguage();
+  // ВИПРАВЛЕНО: беремо changeLanguage
+  const { language, changeLanguage, t } = useLanguage();
+  
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Відслідковуємо скрол для зміни стилю хедера
+  // Відслідковуємо скрол
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -16,7 +18,7 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Блокуємо прокрутку сторінки, коли відкрите мобільне меню
+  // Блокуємо прокрутку боді
   useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = 'hidden';
@@ -25,14 +27,12 @@ const Header = () => {
     }
   }, [menuOpen]);
 
-  // Плавний скрол до якоря
   const handleScrollTo = (e, id) => {
     e.preventDefault();
-    setMenuOpen(false); // Закриваємо меню
+    setMenuOpen(false);
     
     const element = document.querySelector(id);
     if (element) {
-      // Враховуємо висоту хедера при скролі (щоб заголовок не ховався)
       const headerOffset = 100;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
@@ -44,19 +44,18 @@ const Header = () => {
     }
   };
 
-  // Список посилань
   const navLinks = [
     { name: t.header?.home || "Головна", href: '#home' },
     { name: t.about?.title || "Про мене", href: '#about' },
     { name: t.portfolio?.title || "Портфоліо", href: '#portfolio' },
     { name: t.services?.title || "Послуги", href: '#services' },
-    { name: t.contact?.title || "Контакти", href: '#contact' }, // Перевір, щоб у Contact.jsx був id="contact"
+    { name: t.contact?.title || "Контакти", href: '#contact' },
   ];
 
   return (
     <header className={`header ${scrolled ? 'scrolled' : ''}`}>
       
-      {/* БУРГЕР-КНОПКА (Мобільна) */}
+      {/* БУРГЕР-КНОПКА (Як було раніше - зовні контейнера) */}
       <div 
         className={`burger-btn ${menuOpen ? 'active' : ''}`} 
         onClick={() => setMenuOpen(!menuOpen)}
@@ -66,18 +65,18 @@ const Header = () => {
         <span></span>
       </div>
 
-      {/* ПЕРЕМИКАЧ МОВИ */}
+      {/* ПЕРЕМИКАЧ МОВИ (Як було раніше - зовні контейнера) */}
       <div className="header__lang">
         <span 
           className={`lang-item ${language === 'ua' ? 'active' : ''}`}
-          onClick={() => setLanguage('ua')}
+          onClick={() => changeLanguage('ua')} // <--- ТУТ ВИПРАВЛЕНО
         >
           UA
         </span>
         <span className="divider">|</span>
         <span 
           className={`lang-item ${language === 'pl' ? 'active' : ''}`}
-          onClick={() => setLanguage('pl')}
+          onClick={() => changeLanguage('pl')} // <--- ТУТ ВИПРАВЛЕНО
         >
           PL
         </span>
@@ -98,7 +97,6 @@ const Header = () => {
             {navLinks.map((link) => (
               <li 
                 key={link.href}
-                // Додаємо клас 'mobile-only' тільки для посилання 'Головна' (#home)
                 className={link.href === '#home' ? 'mobile-only' : ''}
               >
                 <a 
