@@ -1,0 +1,118 @@
+@import '../../styles/variables';
+
+.services-section {
+  padding: 40px 0 20px 0;
+  background-color: $bg-color;
+
+  @media (max-width: 768px) {
+    padding: 40px 0 20px 0;
+  }
+
+  // ЗАГОЛОВОК БЛОКУ (Еталон стилю)
+  .section-title {
+    font-family: $font-main; 
+    font-weight: 300;
+    font-size: 3rem;
+    text-align: center;
+    color: $primary-color;
+    margin-bottom: 60px;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+
+    @media (max-width: 768px) { font-size: 2.2rem; margin-bottom: 20px;}
+  }
+
+  // СІТКА
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 30px;
+    padding: 0 20px;
+
+    @media (max-width: 1024px) {
+      
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // --- СКЛЯНА КАРТКА ---
+  .service-card {
+    // 1. ЕФЕКТ СКЛА (Як у Хедера)
+    background-color: rgba($header-bg, 0.6); // Напівпрозорий колір хедера
+    backdrop-filter: blur(12px);             // Розмиття фону під карткою
+    -webkit-backdrop-filter: blur(12px);
+    
+    // Тонкий скляний бортик
+    border: 1px solid rgba(255, 255, 255, 0.4); 
+    
+    // Тінь і форма
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    border-radius: 20px;
+    padding: 40px 30px;
+    
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100%; 
+
+    .card-content {
+      width: 100%;
+    }
+
+    // 2. ЗАГОЛОВОК КАРТКИ (Як у блоку)
+    .service-title {
+      font-family: $font-main;   // Manrope
+      font-weight: 300;          // <--- ТОНКИЙ (як у головного заголовка)
+      font-size: 1.4rem;         // Трохи менший за головний, але помітний
+      color: $primary-color;
+      text-transform: uppercase; // Великі букви
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+      transition: color 0.3s;
+    }
+
+    // ЛІНІЯ РОЗДІЛЮВАЧ
+    .divider {
+      width: 40px;
+      height: 1px; // Тонша лінія для елегантності
+      background-color: $primary-color;
+      opacity: 0.3;
+      margin: 0 auto 20px auto;
+      transition: all 0.4s ease;
+    }
+
+    .service-desc {
+      font-family: $font-main;
+      font-size: 0.95rem;
+      color: rgba($primary-color, 0.7);
+      line-height: 1.6;
+      font-weight: 400; // Звичайний текст
+    }
+
+    // ЕФЕКТИ ПРИ НАВЕДЕННІ
+    // &:hover {
+    //   transform: translateY(-10px); 
+    //   background-color: rgba($header-bg, 0.8); // Стає менш прозорою
+    //   box-shadow: 0 20px 40px rgba(0,0,0,0.08); 
+    //   border-color: rgba($accent-color, 0.4); // Золота рамка
+
+    //   .service-title {
+    //     color: $accent-color; // Золотий заголовок
+    //   }
+
+    //   .divider {
+    //     width: 60px;
+    //     background-color: $accent-color;
+    //     opacity: 1;
+    //   }
+    // }
+  }
+}

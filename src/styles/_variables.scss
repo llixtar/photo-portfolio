@@ -1,0 +1,27 @@
+// src/styles/_variables.scss
+
+// Кольори
+$primary-color: #2c3e50;    // Темно-синій (для тексту)
+$accent-color: #d4a373;     // Золотистий/Беж (для акцентів)
+$bg-color: #E1E2EF;         // Фон сайту
+$header-bg: #D1D2D8;
+$text-light: #6c757d;       // Сірий текст
+
+// Шрифти
+$font-main: 'Helvetica Neue', sans-serif;
+
+// Розміри
+$container-width: 1200px;   // Максимальна ширина контенту
+
+// Брейкпоінти (Точки зламу для адаптації) - ОСЬ ВОНО!
+$mobile: 768px;
+$tablet: 1024px;
+
+// src/styles/_variables.scss
+
+// ... кольори ...
+
+// Шрифти
+$font-main: 'Manrope', sans-serif;
+$font-logo: 'Cinzel Decorative', cursive;
+$font-signature: 'Great Vibes', cursive; // Додай цю змінну

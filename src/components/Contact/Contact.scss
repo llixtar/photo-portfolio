@@ -1,0 +1,136 @@
+@import '../../styles/variables';
+
+.contact-section {
+  background-color: $bg-color; 
+  padding: 40px 0 100px 0;
+
+  @media (max-width: 768px) {
+    padding: 30px 0 60px 0;
+  }
+
+  .container {
+    // ЗБІЛЬШИВ ШИРИНУ, щоб кнопки влізли в ряд
+    max-width: 1200px; 
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    text-align: center;
+  }
+
+  .section-title {
+    font-family: $font-main; 
+    font-weight: 300;
+    font-size: 3rem;
+    color: $primary-color;
+    margin-bottom: 30px; 
+    text-transform: uppercase;
+    letter-spacing: -1px;
+
+    @media (max-width: 768px) { font-size: 2.2rem; margin-bottom: 20px;}
+  }
+
+  // ТЕКСТ
+  .contact-text {
+    font-family: $font-main;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: rgba($primary-color, 0.8);
+    // Обмежуємо ширину САМЕ ТЕКСТУ, а не всього контейнера
+    max-width: 600px; 
+    margin: 0 auto 50px auto; // Відступ знизу до кнопок 50px
+
+    @media (max-width: 768px) {
+      font-size: 1rem;
+      margin-bottom: 40px;
+    }
+  }
+
+  // СОЦМЕРЕЖІ
+  .social-links {
+    display: flex;
+    gap: 30px; // Відступ між кнопками
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 40px; // Відступ знизу до локації
+
+    // На мобільному - стовпчик
+    @media (max-width: 900px) { // Трохи раніше перемикаємо на стовпчик, якщо екран вузький
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .social-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      text-decoration: none;
+      color: $primary-color;
+      font-family: $font-main;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      padding: 12px 25px;
+      
+      // Стиль кнопки
+      border: 1px solid rgba($primary-color, 0.1);
+      border-radius: 50px; 
+      background-color: transparent;
+      
+      // Щоб текст не переносився всередині кнопки
+      white-space: nowrap; 
+
+      @media (max-width: 900px) {
+        width: 100%; 
+        max-width: 300px; 
+        justify-content: center;
+      }
+
+      .icon-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        svg {
+          width: 20px;
+          height: 20px;
+          transition: transform 0.3s ease;
+        }
+      }
+
+      &:hover {
+        border-color: $accent-color; 
+        color: $accent-color;        
+        background-color: rgba($header-bg, 0.5); 
+        transform: translateY(-3px);
+
+        .icon-wrapper svg {
+          transform: scale(1.1); 
+        }
+      }
+    }
+  }
+
+  // ЛОКАЦІЯ
+  .location-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: $primary-color;
+    opacity: 0.6; // Трохи блідіша, бо вона тепер внизу як підпис
+    
+    svg {
+      color: $accent-color; 
+    }
+
+    .location-text {
+      font-family: $font-main;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+  }
+}
