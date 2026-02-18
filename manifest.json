@@ -1,0 +1,20 @@
+{
+  "short_name": "DEVIANT",
+  "name": "DEVIANT Photography",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "og-image.jpg",
+      "type": "image/jpeg",
+      "sizes": "1200x630"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#F9F7F2",
+  "background_color": "#ffffff"
+}

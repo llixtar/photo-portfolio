@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'; // <--- БУЛО useEffct, СТАЛО useEffect
+import React, { useEffect } from 'react';
 import Header from './components/Header/Header';
 import Hero from './components/Hero/Hero';
 import About from './components/About/About';
@@ -12,13 +12,22 @@ import './styles/main.scss';
 function App() {
 
   useEffect(() => {
-    // 1. Вимикаємо "пам'ять" браузера про скрол
+    // 1. Вимикаємо стандартне відновлення скролу
     if ('scrollRestoration' in history) {
       window.history.scrollRestoration = 'manual';
     }
+
+    // 2. Якщо в адресі є #hash (наприклад, #services), прибираємо його тихо
+    if (window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
     
-    // 2. Примусово кидаємо нагору
-    window.scrollTo(0, 0);
+    // 3. Скролимо нагору з мікро-затримкою (це перебиває поведінку браузера)
+    const timer = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 10); // 10 мілісекунд достатньо
+
+    return () => clearTimeout(timer); // Чистимо таймер при виході
   }, []);
 
   return (

@@ -119,9 +119,9 @@ const Portfolio = () => {
               >
                 <div className="card-image">
                   <img src={cat.cover} alt={cat.title} />
-                  <div className="overlay">
+                  {/* <div className="overlay">
                     <span>Переглянути</span>
-                  </div>
+                  </div> */}
                 </div>
                 <h3 className="card-title">{cat.title}</h3>
               </div>
