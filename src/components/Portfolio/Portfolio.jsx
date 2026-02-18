@@ -8,24 +8,24 @@ const Portfolio = () => {
   const [activeCategory, setActiveCategory] = useState(null);
   const [lightboxIndex, setLightboxIndex] = useState(null);
 
-  // --- МАГІЯ VITE: ДИНАМІЧНИЙ ІМПОРТ ФОТО ---
-  // eager: true означає, що фото завантажуються одразу
+  // --- СТЕЙТ ДЛЯ СВАЙПІВ ---
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+  const minSwipeDistance = 50; // Мінімальна довжина свайпу (в пікселях), щоб він спрацював
+
+  // --- ІМПОРТ ФОТО ---
   const familyImports = import.meta.glob('../../assets/images/portfolio/family/*.{png,jpg,jpeg,webp}', { eager: true });
   const individualImports = import.meta.glob('../../assets/images/portfolio/individual/*.{png,jpg,jpeg,webp}', { eager: true });
   const lovestoryImports = import.meta.glob('../../assets/images/portfolio/lovestory/*.{png,jpg,jpeg,webp}', { eager: true });
   const weddingImports = import.meta.glob('../../assets/images/portfolio/wedding/*.{png,jpg,jpeg,webp}', { eager: true });
 
-  // Функція-помічник, яка перетворює об'єкт імпортів у простий масив шляхів
-  const getImages = (imports) => {
-    return Object.values(imports).map((mod) => mod.default);
-  };
+  const getImages = (imports) => Object.values(imports).map((mod) => mod.default);
 
   const familyPhotos = getImages(familyImports);
   const individualPhotos = getImages(individualImports);
   const lovestoryPhotos = getImages(lovestoryImports);
   const weddingPhotos = getImages(weddingImports);
 
-  // Блокування скролу
   useEffect(() => {
     if (activeCategory || lightboxIndex !== null) {
       document.body.style.overflow = 'hidden';
@@ -34,33 +34,11 @@ const Portfolio = () => {
     }
   }, [activeCategory, lightboxIndex]);
 
-  // ДАНІ КАТЕГОРІЙ
-  // cover: photos[0] - бере перше фото з папки як обкладинку
   const categoriesData = [
-    {
-      id: 'family',
-      title: t.portfolio.categories.family,
-      cover: familyPhotos[0] || null, // Якщо папка пуста, не впаде
-      photos: familyPhotos
-    },
-    {
-      id: 'individual',
-      title: t.portfolio.categories.individual,
-      cover: individualPhotos[0] || null,
-      photos: individualPhotos
-    },
-    {
-      id: 'lovestory',
-      title: t.portfolio.categories.lovestory,
-      cover: lovestoryPhotos[0] || null,
-      photos: lovestoryPhotos
-    },
-    {
-      id: 'wedding',
-      title: t.portfolio.categories.wedding,
-      cover: weddingPhotos[0] || null,
-      photos: weddingPhotos
-    }
+    { id: 'family', title: t.portfolio.categories.family, cover: familyPhotos[0] || null, photos: familyPhotos },
+    { id: 'individual', title: t.portfolio.categories.individual, cover: individualPhotos[0] || null, photos: individualPhotos },
+    { id: 'lovestory', title: t.portfolio.categories.lovestory, cover: lovestoryPhotos[0] || null, photos: lovestoryPhotos },
+    { id: 'wedding', title: t.portfolio.categories.wedding, cover: weddingPhotos[0] || null, photos: weddingPhotos }
   ];
 
   const currentCategoryData = categoriesData.find(c => c.id === activeCategory);
@@ -79,6 +57,39 @@ const Portfolio = () => {
     setLightboxIndex((prevIndex) => 
       prevIndex === 0 ? currentPhotos.length - 1 : prevIndex - 1
     );
+  };
+
+  // --- ЛОГІКА СВАЙПІВ (TOUCH EVENTS) ---
+  const onTouchStart = (e) => {
+    setTouchEnd(null); // Скидаємо кінець свайпу
+    setTouchStart({ x: e.targetTouches[0].clientX, y: e.targetTouches[0].clientY });
+  };
+
+  const onTouchMove = (e) => {
+    setTouchEnd({ x: e.targetTouches[0].clientX, y: e.targetTouches[0].clientY });
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distanceX = touchStart.x - touchEnd.x;
+    const distanceY = touchStart.y - touchEnd.y;
+    const isHorizontalSwipe = Math.abs(distanceX) > Math.abs(distanceY);
+
+    // 1. ГОРИЗОНТАЛЬНИЙ СВАЙП (Вліво/Вправо - Гортання)
+    if (isHorizontalSwipe) {
+      if (distanceX > minSwipeDistance) {
+        nextPhoto(); // Свайп вліво -> Наступне фото
+      } else if (distanceX < -minSwipeDistance) {
+        prevPhoto(); // Свайп вправо -> Попереднє фото
+      }
+    } 
+    // 2. ВЕРТИКАЛЬНИЙ СВАЙП (Вгору/Вниз - Закриття)
+    else {
+      if (Math.abs(distanceY) > minSwipeDistance) {
+        setLightboxIndex(null); // Закриваємо
+      }
+    }
   };
 
   // Керування клавіатурою
@@ -100,7 +111,6 @@ const Portfolio = () => {
 
         <div className="categories-grid">
           {categoriesData.map((cat) => (
-            // Показуємо картку тільки якщо в ній є хоча б одне фото
             cat.photos.length > 0 && (
               <div 
                 key={cat.id} 
@@ -144,10 +154,19 @@ const Portfolio = () => {
         </div>
       )}
 
-      {/* --- LIGHTBOX --- */}
+      {/* --- LIGHTBOX (ОНОВЛЕНИЙ З ЖЕСТАМИ) --- */}
       {lightboxIndex !== null && (
-        <div className="lightbox" onClick={() => setLightboxIndex(null)}>
+        <div 
+          className="lightbox" 
+          onClick={() => setLightboxIndex(null)}
+          // ДОДАЄМО ОБРОБНИКИ ДОТИКІВ
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
           <button className="close-lightbox">✕</button>
+          
+          {/* Кнопки лишаємо для комп'ютера */}
           <button className="nav-btn prev" onClick={prevPhoto}>❮</button>
           
           <img 

@@ -19,7 +19,6 @@
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
-  // Стан при скролі
   &.scrolled {
     padding: 10px 0;
     background-color: rgba($header-bg, 0.95);
@@ -62,8 +61,8 @@
     }
   }
 
-  // --- 2. МОВИ (UA | PL) ---
-  &__lang {
+  // --- 2. МОВИ ДЕСКТОП (Ховаємо на мобільному) ---
+  &__lang.desktop-lang {
     position: absolute;
     top: 25px;
     right: 40px;
@@ -74,8 +73,9 @@
     z-index: 2000; 
     cursor: default;
 
+    // ГОЛОВНА ЗМІНА:
     @media (max-width: 768px) {
-      right: 20px; 
+      display: none; 
     }
 
     .lang-item {
@@ -124,6 +124,33 @@
 
   // --- 4. НАВІГАЦІЯ ---
   &__nav {
+    
+    // --- НОВЕ: МОБІЛЬНА МОВА ---
+    .mobile-lang {
+        display: none; // На ПК ховаємо
+        
+        @media (max-width: 768px) {
+            display: block;
+            position: absolute;
+            top: 25px;      // На одній висоті з бургером
+            right: 20px;    // Справа
+            font-family: $font-main;
+            font-size: 1rem;
+            color: $primary-color;
+            z-index: 2001;
+            
+            .lang-item {
+              cursor: pointer;
+                padding: 10px;
+                opacity: 0.6;
+                transition: opacity 0.3s;
+                &.active { opacity: 1; font-weight: bold; text-decoration: underline;}
+            }
+            .divider { opacity: 0.4; margin: 0 5px;}
+        }
+    }
+    // ---------------------------
+
     ul {
       display: flex;
       gap: 60px;
@@ -131,7 +158,6 @@
       margin: 0;
 
       li {
-        // ЛОГІКА ХОВАННЯ "ГОЛОВНОЇ"
         &.mobile-only {
           display: none; // На ПК ховаємо
         }
@@ -188,7 +214,6 @@
         gap: 40px;
 
         li {
-          // ТУТ ВМИКАЄМО "ГОЛОВНУ" НАЗАД
           &.mobile-only {
             display: block; 
           }

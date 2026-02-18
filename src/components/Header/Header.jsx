@@ -3,13 +3,11 @@ import './Header.scss';
 import { useLanguage } from '../../context/LanguageContext';
 
 const Header = () => {
-  // ВИПРАВЛЕНО: беремо changeLanguage
   const { language, changeLanguage, t } = useLanguage();
   
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Відслідковуємо скрол
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -18,7 +16,6 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Блокуємо прокрутку боді
   useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = 'hidden';
@@ -55,7 +52,7 @@ const Header = () => {
   return (
     <header className={`header ${scrolled ? 'scrolled' : ''}`}>
       
-      {/* БУРГЕР-КНОПКА (Як було раніше - зовні контейнера) */}
+      {/* БУРГЕР-КНОПКА */}
       <div 
         className={`burger-btn ${menuOpen ? 'active' : ''}`} 
         onClick={() => setMenuOpen(!menuOpen)}
@@ -65,18 +62,18 @@ const Header = () => {
         <span></span>
       </div>
 
-      {/* ПЕРЕМИКАЧ МОВИ (Як було раніше - зовні контейнера) */}
-      <div className="header__lang">
+      {/* --- 1. ПЕРЕМИКАЧ МОВИ (ТІЛЬКИ ДЛЯ ПК) --- */}
+      <div className="header__lang desktop-lang">
         <span 
           className={`lang-item ${language === 'ua' ? 'active' : ''}`}
-          onClick={() => changeLanguage('ua')} // <--- ТУТ ВИПРАВЛЕНО
+          onClick={() => changeLanguage('ua')}
         >
           UA
         </span>
         <span className="divider">|</span>
         <span 
           className={`lang-item ${language === 'pl' ? 'active' : ''}`}
-          onClick={() => changeLanguage('pl')} // <--- ТУТ ВИПРАВЛЕНО
+          onClick={() => changeLanguage('pl')}
         >
           PL
         </span>
@@ -91,8 +88,26 @@ const Header = () => {
           </a>
         </div>
 
-        {/* НАВІГАЦІЯ */}
+        {/* НАВІГАЦІЯ (ВОНА Ж ШТОРКА МЕНЮ) */}
         <nav className={`header__nav ${menuOpen ? 'mobile-active' : ''}`}>
+          
+          {/* --- 2. ПЕРЕМИКАЧ МОВИ (ТІЛЬКИ ДЛЯ МОБІЛЬНОГО - ВСЕРЕДИНІ МЕНЮ) --- */}
+          <div className="mobile-lang">
+             <span 
+              className={`lang-item ${language === 'ua' ? 'active' : ''}`}
+              onClick={() => { changeLanguage('ua'); setMenuOpen(false); }}
+            >
+              UA
+            </span>
+            <span className="divider">|</span>
+            <span 
+              className={`lang-item ${language === 'pl' ? 'active' : ''}`}
+              onClick={() => { changeLanguage('pl'); setMenuOpen(false); }}
+            >
+              PL
+            </span>
+          </div>
+
           <ul>
             {navLinks.map((link) => (
               <li 

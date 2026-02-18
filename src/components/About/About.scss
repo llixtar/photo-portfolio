@@ -7,12 +7,22 @@
 
   .about-content {
     display: flex;
-    align-items: center; 
-    gap: 80px; 
+    align-items: center;
+    gap: 80px;
 
     @media (max-width: 992px) {
-      flex-direction: column; 
+      flex-direction: column;
       gap: 50px;
+
+    }
+
+    // ДОДАЙ ЦЕЙ БЛОК ДЛЯ МОБІЛЬНОГО:
+    @media (max-width: 768px) {
+      // padding-top: 0px; // <--- Прибираємо відступ зверху повністю
+      // padding-bottom: 30px; // Зменшуємо відступ знизу
+
+      padding: 0px 20px 10px 20px;
+      gap: 30px;
     }
   }
 
@@ -20,15 +30,17 @@
   .about-image {
     flex: 1;
     position: relative;
-    max-width: 500px; 
+    max-width: 500px;
     width: 100%;
-    
+
     // Вирівнювання по центру на мобільних
-    @media (max-width: 992px) { margin: 0 auto; }
+    @media (max-width: 992px) {
+      margin: 0 auto;
+    }
 
     .image-wrapper {
       position: relative;
-      z-index: 2; 
+      z-index: 2;
       overflow: hidden;
 
       // --- ЕФЕКТ СКЛА (GLASSMORPHISM) ---
@@ -65,7 +77,7 @@
     flex: 1;
 
     .section-title {
-      font-family: $font-logo; 
+      font-family: $font-logo;
       font-size: 1rem;
       color: $accent-color;
       text-transform: uppercase;
@@ -86,7 +98,7 @@
     }
 
     .photographer-name {
-      font-family: $font-main; 
+      font-family: $font-main;
       font-size: 3.5rem;
       color: $primary-color;
       margin-bottom: 30px;
@@ -101,7 +113,7 @@
 
     .text-body {
       p {
-        font-family: $font-main; 
+        font-family: $font-main;
         color: rgba($primary-color, 0.8);
         line-height: 1.8;
         margin-bottom: 20px;
@@ -118,8 +130,8 @@
       padding-top: 30px;
 
       @media (max-width: 480px) {
-         gap: 20px;
-         justify-content: space-between;
+        gap: 20px;
+        justify-content: space-between;
       }
 
       .stat-item {
@@ -127,7 +139,7 @@
         flex-direction: column;
 
         .number {
-          font-family: $font-logo; 
+          font-family: $font-logo;
           font-size: 2.5rem;
           color: $primary-color;
           line-height: 1;
@@ -146,12 +158,12 @@
 
     // Підпис
     .signature {
-      font-family: $font-signature; 
+      font-family: $font-signature;
       font-size: 3rem;
-      color: rgba($primary-color, 0.3); 
+      color: rgba($primary-color, 0.3);
       margin-top: 40px;
-      transform: rotate(-5deg); 
-      text-align: right; 
+      transform: rotate(-5deg);
+      text-align: right;
     }
   }
 }
