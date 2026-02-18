@@ -1,4 +1,5 @@
 // src/main.jsx
+import { Analytics } from '@vercel/analytics/react';
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
@@ -10,6 +11,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     {/* Огортаємо App, щоб мова була доступна всюди */}
     <LanguageProvider>
       <App />
+      <Analytics />
     </LanguageProvider>
   </React.StrictMode>,
 )
