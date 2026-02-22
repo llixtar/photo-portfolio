@@ -11,7 +11,7 @@ const Portfolio = () => {
   // --- СТЕЙТ ДЛЯ СВАЙПІВ ---
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
-  const minSwipeDistance = 50; // Мінімальна довжина свайпу (в пікселях), щоб він спрацював
+  const minSwipeDistance = 50; 
 
   // --- ІМПОРТ ФОТО ---
   const familyImports = import.meta.glob('../../assets/images/portfolio/family/*.{png,jpg,jpeg,webp}', { eager: true });
@@ -44,6 +44,23 @@ const Portfolio = () => {
   const currentCategoryData = categoriesData.find(c => c.id === activeCategory);
   const currentPhotos = currentCategoryData ? currentCategoryData.photos : [];
 
+  // --- 🌟 SEO: ФУНКЦІЯ-ПОКРАЩУВАЧ ДЛЯ ALT-ТЕКСТІВ ---
+  // Вона бере шлях до файлу (напр. /assets/wedding-swidnica-01.webp), 
+  // витягує з нього назву і робить з неї красивий текст для Google.
+  const generateAltText = (filePath, categoryName) => {
+    if (!filePath) return `${categoryName} фотосесія`;
+    try {
+      // Витягуємо ім'я файлу без розширення і шляху
+      const fileName = filePath.split('/').pop().split('.')[0];
+      // Замінюємо дефіси і нижні підкреслення на пробіли
+      const cleanName = fileName.replace(/[-_]/g, ' ');
+      // Додаємо назву категорії для більшої ваги ключових слів
+      return `Фотограф Тетяна Щелакова - ${categoryName}, ${cleanName}`;
+    } catch (error) {
+      return `Професійна ${categoryName} фотосесія`;
+    }
+  };
+
   // --- ЛОГІКА ПЕРЕМИКАННЯ ФОТО ---
   const nextPhoto = (e) => {
     e?.stopPropagation();
@@ -61,7 +78,7 @@ const Portfolio = () => {
 
   // --- ЛОГІКА СВАЙПІВ (TOUCH EVENTS) ---
   const onTouchStart = (e) => {
-    setTouchEnd(null); // Скидаємо кінець свайпу
+    setTouchEnd(null);
     setTouchStart({ x: e.targetTouches[0].clientX, y: e.targetTouches[0].clientY });
   };
 
@@ -76,18 +93,16 @@ const Portfolio = () => {
     const distanceY = touchStart.y - touchEnd.y;
     const isHorizontalSwipe = Math.abs(distanceX) > Math.abs(distanceY);
 
-    // 1. ГОРИЗОНТАЛЬНИЙ СВАЙП (Вліво/Вправо - Гортання)
     if (isHorizontalSwipe) {
       if (distanceX > minSwipeDistance) {
-        nextPhoto(); // Свайп вліво -> Наступне фото
+        nextPhoto();
       } else if (distanceX < -minSwipeDistance) {
-        prevPhoto(); // Свайп вправо -> Попереднє фото
+        prevPhoto();
       }
     } 
-    // 2. ВЕРТИКАЛЬНИЙ СВАЙП (Вгору/Вниз - Закриття)
     else {
       if (Math.abs(distanceY) > minSwipeDistance) {
-        setLightboxIndex(null); // Закриваємо
+        setLightboxIndex(null);
       }
     }
   };
@@ -118,10 +133,12 @@ const Portfolio = () => {
                 onClick={() => setActiveCategory(cat.id)}
               >
                 <div className="card-image">
-                  <img src={cat.cover} alt={cat.title} />
-                  {/* <div className="overlay">
-                    <span>Переглянути</span>
-                  </div> */}
+                  {/* Додано SEO-alt для обкладинок категорій */}
+                  <img 
+                    src={cat.cover} 
+                    alt={`Портфоліо категорії ${cat.title} - фотограф Свідниця`} 
+                    loading="lazy"
+                  />
                 </div>
                 <h3 className="card-title">{cat.title}</h3>
               </div>
@@ -146,7 +163,12 @@ const Portfolio = () => {
                   className="photo-item"
                   onClick={() => setLightboxIndex(index)}
                 >
-                  <img src={photo} alt={`Portfolio ${index}`} loading="lazy" />
+                  {/* Застосовано SEO-функцію та loading="lazy" */}
+                  <img 
+                    src={photo} 
+                    alt={generateAltText(photo, currentCategoryData.title)} 
+                    loading="lazy" 
+                  />
                 </div>
               ))}
             </div>
@@ -154,24 +176,22 @@ const Portfolio = () => {
         </div>
       )}
 
-      {/* --- LIGHTBOX (ОНОВЛЕНИЙ З ЖЕСТАМИ) --- */}
+      {/* --- LIGHTBOX --- */}
       {lightboxIndex !== null && (
         <div 
           className="lightbox" 
           onClick={() => setLightboxIndex(null)}
-          // ДОДАЄМО ОБРОБНИКИ ДОТИКІВ
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
         >
           <button className="close-lightbox">✕</button>
-          
-          {/* Кнопки лишаємо для комп'ютера */}
           <button className="nav-btn prev" onClick={prevPhoto}>❮</button>
           
+          {/* Застосовано SEO-функцію для повнорозмірного фото */}
           <img 
             src={currentPhotos[lightboxIndex]} 
-            alt="Full screen" 
+            alt={generateAltText(currentPhotos[lightboxIndex], currentCategoryData.title)} 
             onClick={(e) => e.stopPropagation()} 
           />
 
